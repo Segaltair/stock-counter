@@ -1,6 +1,7 @@
 package com.surakin.stock.counter.controller;
 
 import com.surakin.stock.counter.dto.ApiRequest;
+import com.surakin.stock.counter.dto.Portfolio;
 import com.surakin.stock.counter.dto.Stock;
 import com.surakin.stock.counter.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Arrays;
+
 @Controller
 public class PortfolioController {
 
@@ -17,12 +20,14 @@ public class PortfolioController {
     StockService stockService;
 
     @RequestMapping(value = "/portfolio", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<Stock[]> baseUrlRedirect(@RequestBody ApiRequest apiRequest) {
-        Stock[] request = apiRequest.getStocks();
-        Stock[] response = new Stock[request.length];
-        for (int i = 0; i < request.length; i++) {
-            response[i] = stockService.getStockBySymbol(request[i].getSymbol());
-        }
+    public ResponseEntity<Portfolio[]> baseUrlRedirect(@RequestBody ApiRequest apiRequest) {
+
+        Portfolio[] response = Arrays.stream(apiRequest.getStocks())
+                .map(r -> {
+                    Stock stock = stockService.getStockBySymbol(r.getSymbol());
+                    return new Portfolio(stock, r.getVolume());
+                })
+                .toArray(Portfolio[]::new);
 
         return ResponseEntity.ok(response);
     }

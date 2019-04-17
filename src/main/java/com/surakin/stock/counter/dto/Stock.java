@@ -1,6 +1,6 @@
 package com.surakin.stock.counter.dto;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
 public class Stock {
@@ -8,7 +8,6 @@ public class Stock {
     private String symbol;
     private String companyName;
     private String sector;
-    private String latestPrice;
-    private Integer volume;
+    private Double latestPrice;
 
 }

@@ -1,10 +1,10 @@
 package com.surakin.stock.counter.dto;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
 public class ApiRequest {
 
-    private Stock[] stocks;
+    private StockRequest[] stocks;
 
 }

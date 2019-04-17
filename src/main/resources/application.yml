@@ -1,20 +1,11 @@
 spring:
-    datasource:
-      driver-class-name: org.sqlite.JDBC
-      url: jdbc:sqlite::resource:portfolio.db
-    jpa:
-        database-platform: org.hibernate.dialect.SQLiteDialect
-        properties:
-            hibernate:
-                current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
-                dialect: org.hibernate.dialect.SQLiteDialect
-                format_sql: true
-        show-sql: true
+  autoconfigure:
+    exclude:
+    - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+    - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
 logging:
     pattern:
       file: "%d{HH:mm:ss} %-5p [%c] - %m%n"
     level:
         ROOT: error
         org.springframework: warn
-        org.hibernate: info
-        org.hibernate.type.descriptor.sql: info

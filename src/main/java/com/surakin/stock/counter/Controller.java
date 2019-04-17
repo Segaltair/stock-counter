@@ -13,8 +13,12 @@ public class Controller {
 
 
     @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<Stock> baseUrlRedirect(@RequestBody Stock stock) {
-        Stock response = myService.getStockBySymbol(stock.getSymbol());
+    public ResponseEntity<Stock[]> baseUrlRedirect(@RequestBody ApiRequest apiRequest) {
+        Stock[] request = apiRequest.getStocks();
+        Stock[] response = new Stock[request.length];
+        for (int i = 0; i < request.length; i++) {
+            response[i] = myService.getStockBySymbol(request[i].getSymbol());
+        }
 
         return ResponseEntity.ok(response);
     }

@@ -7,51 +7,65 @@ import com.surakin.stock.counter.dto.Stock;
 import com.surakin.stock.counter.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class PortfolioController {
 
     @Autowired
-    StockService stockService;
+    private StockService stockService;
 
-    @RequestMapping(value = "/portfolio", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/portfolio", consumes = "application/json")
     public ResponseEntity<ApiResponse> baseUrlRedirect(@RequestBody ApiRequest apiRequest) {
+        List<Stock> stocks = getStocksBySymbol(apiRequest);
 
-        //Получить акции
-        Portfolio[] response = Arrays.stream(apiRequest.getStocks())
-                .map(r -> {
-                    Stock stock = stockService.getStockBySymbol(r.getSymbol());
-                    return new Portfolio(stock, r.getVolume());
-                })
-                .toArray(Portfolio[]::new);
+        Double value = getTotalValue(stocks);
 
-        ApiResponse apiResponse = new ApiResponse(response);
+        List<Portfolio> portfolios = new ArrayList<>();
 
-        List<Portfolio> portfolios1 = new ArrayList<>();
-
-        //Посчитать assetValues, sum(assetValues), proportion
-        Arrays.stream(response)
-                .collect(Collectors.groupingBy(Portfolio::getSector))
-                .forEach((s, portfolios) -> {
-                    Double sumAssetValue = portfolios.stream()
-                            .mapToDouble(Portfolio::getAssetValue)
-                            .sum();
-                    portfolios1.add(new Portfolio(s, sumAssetValue, sumAssetValue/apiResponse.getValue()));
+        stocks.stream()
+                .collect(Collectors.groupingBy(Stock::getSector))
+                .forEach((s, p) -> {
+                    Double sumAssetValue = getSectorAssetValue(p);
+                    portfolios.add(new Portfolio(s, sumAssetValue, sumAssetValue / value));
                 });
 
-        apiResponse.setAllocations(portfolios1.toArray(new Portfolio[0]));
+        ApiResponse apiResponse = new ApiResponse(value, portfolios);
 
         return ResponseEntity.ok(apiResponse);
+    }
+
+    private List<Stock> getStocksBySymbol(ApiRequest apiRequest) {
+        List<Stock> stocks = apiRequest.getStocks();
+        return stocks.stream()
+                .map(r -> {
+                    Stock stock = stockService.getStockBySymbol(r.getSymbol());
+                    stock.setVolume(r.getVolume());
+                    return stock;
+                })
+                .collect(Collectors.toList());
+    }
+
+    private Double getTotalValue(List<Stock> response) {
+        return response.stream()
+                .mapToDouble(s -> {
+                    s.setAssetValue(s.getVolume() * s.getLatestPrice());
+                    return s.getAssetValue();
+                })
+                .sum();
+    }
+
+    private Double getSectorAssetValue(List<Stock> portfolios) {
+        return portfolios.stream()
+                .mapToDouble(Stock::getAssetValue)
+                .sum();
     }
 
 }

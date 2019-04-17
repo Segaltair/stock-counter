@@ -2,17 +2,15 @@ package com.surakin.stock.counter.dto;
 
 import lombok.Data;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Data
 public class ApiResponse {
     private Double value;
-    private Portfolio[] allocations;
+    private List<Portfolio> allocations;
 
-    public ApiResponse(Portfolio[] allocations) {
+    public ApiResponse(Double value, List<Portfolio> allocations) {
+        this.value = value;
         this.allocations = allocations;
-        value = Arrays.stream(allocations)
-                .mapToDouble(Portfolio::getAssetValue)
-                .sum();
     }
 }

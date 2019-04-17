@@ -9,5 +9,6 @@ public class Stock {
     private String companyName;
     private String sector;
     private Double latestPrice;
-
+    private Integer volume;
+    private Double assetValue;
 }

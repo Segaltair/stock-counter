@@ -1,6 +1,7 @@
 package com.surakin.stock.counter.controller;
 
 import com.surakin.stock.counter.dto.ApiRequest;
+import com.surakin.stock.counter.dto.ApiResponse;
 import com.surakin.stock.counter.dto.Portfolio;
 import com.surakin.stock.counter.dto.Stock;
 import com.surakin.stock.counter.service.StockService;
@@ -20,7 +21,7 @@ public class PortfolioController {
     StockService stockService;
 
     @RequestMapping(value = "/portfolio", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<Portfolio[]> baseUrlRedirect(@RequestBody ApiRequest apiRequest) {
+    public ResponseEntity<ApiResponse> baseUrlRedirect(@RequestBody ApiRequest apiRequest) {
 
         Portfolio[] response = Arrays.stream(apiRequest.getStocks())
                 .map(r -> {
@@ -29,7 +30,7 @@ public class PortfolioController {
                 })
                 .toArray(Portfolio[]::new);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new ApiResponse(response));
     }
 
 }

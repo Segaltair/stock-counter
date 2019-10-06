@@ -1,14 +1,25 @@
 package com.surakin.stock.counter.dto;
 
-import lombok.Data;
-
-@Data
 public class Stock {
-
+    //Аббревиатура
     private String symbol;
-    private String companyName;
-    private String sector;
-    private Double latestPrice;
+    //Сектор
+    //Количество акций
     private Integer volume;
-    private Double assetValue;
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public Integer getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Integer volume) {
+        this.volume = volume;
+    }
 }

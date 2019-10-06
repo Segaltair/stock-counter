@@ -1,31 +1,42 @@
 package com.surakin.stock.counter.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Portfolio {
-    private String symbol;
     private String sector;
-    private Integer volume;
-    private Double latestPrice;
-    private Double assetValue;
-    private Double proportion;
+    private BigDecimal assetValue;
+    private BigDecimal proportion;
 
-    public Portfolio(String sector, Double assetValue, Double proportion) {
+    public Portfolio(String sector, BigDecimal assetValue, BigDecimal proportion) {
         this.sector = sector;
-        this.assetValue = (new BigDecimal(assetValue).setScale(3, BigDecimal.ROUND_HALF_UP)).doubleValue();
-        this.proportion = (new BigDecimal(proportion).setScale(3, BigDecimal.ROUND_HALF_UP)).doubleValue();
+        this.assetValue = assetValue;
+        this.proportion = proportion;
     }
 
-    public Portfolio(Stock stock, Integer volume) {
-        symbol = stock.getSymbol();
-        sector = stock.getSector();
-        this.volume = volume;
-        latestPrice = stock.getLatestPrice();
-        assetValue = volume * stock.getLatestPrice();
+    public String getSector() {
+        return sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
+
+    public BigDecimal getAssetValue() {
+        return assetValue;
+    }
+
+    public void setAssetValue(BigDecimal assetValue) {
+        this.assetValue = assetValue;
+    }
+
+    public BigDecimal getProportion() {
+        return proportion;
+    }
+
+    public void setProportion(BigDecimal proportion) {
+        this.proportion = proportion;
     }
 }

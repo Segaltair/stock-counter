@@ -1,19 +1,16 @@
 # stock-counter
 java-приложение для подсчета текущей стоимости портфеля акций и их распределение по секторам.
 -
-Подключить lombok к проекту.
+Для сборки проекта запустить build.sh<br />
+Или просто выполнить "mvn clean install"<br />
 
-Запустить main class:
+Для запуска приложения необходимо в application.yml вставить токен для аутентификации на iexapis  и запустить main class:
 
     com.surakin.stock.counter.StartStockCounter
 
 Отправить post запрос на: 
 
     http://localhost:8080/portfolio
-
-Названия акций можно взять здесь: 
-
-    https://iextrading.com/apps/stocks/
     
 Пример запроса:
 

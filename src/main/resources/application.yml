@@ -1,11 +1,7 @@
-spring:
-  autoconfigure:
-    exclude:
-    - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-    - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+params:
+    token: "token"
 logging:
     pattern:
       file: "%d{HH:mm:ss} %-5p [%c] - %m%n"
     level:
-        ROOT: error
-        org.springframework: warn
+        ROOT: info

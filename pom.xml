@@ -7,7 +7,10 @@
     <groupId>com.surakin</groupId>
     <artifactId>stock-counter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+
+    <properties>
+        <lombok.version>1.18.4</lombok.version>
+    </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -20,5 +23,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
     </dependencies>
+
+    <build>
+        <finalName>stock-counter</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

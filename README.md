@@ -1,63 +1,35 @@
 # stock-counter
 java-приложение для подсчета текущей стоимости портфеля акций и их распределение по секторам.
 -
-Для сборки проекта запустить build.sh<br />
-Или просто выполнить "mvn clean install"<br />
-
-Для запуска приложения необходимо в application.yml вставить токен для аутентификации на iexapis  и запустить main class:
-
-    com.surakin.stock.counter.StartStockCounter
+Для запуска проекта запустить start.sh  
 
 Отправить post запрос на: 
 
     http://localhost:8080/portfolio
     
-Пример запроса:
+Для такого json:
 
     {
-        "stocks":[
-          {
-             "symbol":"AAPL",
-             "volume":50
-          },
-          {
-             "symbol":"HOG",
-             "volume":10
-          },
-          {
-             "symbol":"MDSO",
-             "volume":1
-          },
-          {
-             "symbol":"IDRA",
-             "volume":1
-          },
-          {
-             "symbol":"MRSN",
-             "volume":1
-          }
-        ]
+      "stocks": [
+        {
+          "symbol": "AAPL",
+          "volume": 50
+        },
+        {
+          "symbol": "HOG",
+          "volume": 10
+        },
     }
+
+Пример запроса будет выглядеть так:
+
+    curl -i -X POST -H "Content-Type:application/json" -H "Cookie:sk_73fe5d5d901248409c8b03e50617efb7" -d "{\"stocks\":[{\"symbol\":\"AAPL\", \"volume\":50}, {\"symbol\":\"HOG\", \"volume\":10}]}" "http://localhost:8080/portfolio"
 
 Пример ответа:
 
-    {
-      "value": 10650.09,
-      "allocations": [
-        {
-          "sector": "Technology",
-          "assetValue": 10232.71,
-          "proportion": 0.961
-        },
-        {
-          "sector": "Healthcare",
-          "assetValue": 6.98,
-          "proportion": 0.001
-        },
-        {
-          "sector": "Consumer Cyclical",
-          "assetValue": 410.4,
-          "proportion": 0.039
-        }
-      ]
-    }
+    HTTP/1.1 200
+    Content-Type: application/json;charset=UTF-8
+    Transfer-Encoding: chunked
+    Date: Thu, 11 Jun 2019 00:00:31 GMT
+    
+    {"value":15442,"allocations":[{"sector":"Electronic Technology","assetValue":15142,"proportion":0.981},{"sector":"Consumer Durables","assetValue":301,"proportion":0.019}]}
